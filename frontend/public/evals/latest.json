@@ -1,0 +1,367 @@
+[
+  {
+    "run_id": "20261120-212206-parser (text)-dev",
+    "created_at": "2026-11-20T15:52:06+00:00",
+    "layer": "parser (text)",
+    "split": "dev",
+    "frozen": true,
+    "n_cases": 30,
+    "cases_hash": "512566451a3e5e439ffc8eec6308b536bf31dabb20023b37d648d2bf0f9158ce",
+    "code_hash": "ede5563c6b2558ec0fb2a3d9305efec25c2ea28688ae517aceebae409596fe93",
+    "prompt_version": "parser_v2",
+    "prompt_hash": "b85fb753f299",
+    "python": "3.11.18",
+    "eval_today": "2026-11-20",
+    "models_used": {
+      "openai/gpt-oss-120b": 30
+    },
+    "command": "python run_parse_eval.py --split dev --rpm 3 --publish",
+    "metrics": [
+      {
+        "name": "utterance exact match",
+        "value": 0.9666666666666667,
+        "n": 30,
+        "ci": [
+          0.8332924860304112,
+          0.9940915620051425
+        ],
+        "note": "every entry fully right, nothing extra"
+      },
+      {
+        "name": "intent accuracy",
+        "value": 1.0,
+        "n": 30,
+        "ci": [
+          0.8864829086095221,
+          1.0
+        ],
+        "note": null
+      },
+      {
+        "name": "entry precision",
+        "value": 1.0,
+        "n": 31,
+        "ci": [
+          0.889740999265246,
+          0.9999999999999999
+        ],
+        "note": "kind+amount right / predicted entries"
+      },
+      {
+        "name": "entry recall",
+        "value": 1.0,
+        "n": 31,
+        "ci": [
+          0.889740999265246,
+          0.9999999999999999
+        ],
+        "note": "kind+amount right / expected entries"
+      },
+      {
+        "name": "amount accuracy",
+        "value": 1.0,
+        "n": 26,
+        "ci": [
+          0.8712669561953784,
+          1.0
+        ],
+        "note": null
+      },
+      {
+        "name": "kind accuracy (matched)",
+        "value": 1.0,
+        "n": 31,
+        "ci": [
+          0.889740999265246,
+          0.9999999999999999
+        ],
+        "note": null
+      },
+      {
+        "name": "category accuracy (matched)",
+        "value": 1.0,
+        "n": 19,
+        "ci": [
+          0.8318156346315496,
+          1.0
+        ],
+        "note": null
+      },
+      {
+        "name": "regular_event accuracy (matched)",
+        "value": 0.75,
+        "n": 4,
+        "ci": [
+          0.3006360524426366,
+          0.9544139373553637
+        ],
+        "note": null
+      },
+      {
+        "name": "member accuracy (matched)",
+        "value": 1.0,
+        "n": 1,
+        "ci": [
+          0.20654329147389294,
+          1.0
+        ],
+        "note": null
+      },
+      {
+        "name": "date accuracy (matched)",
+        "value": 1.0,
+        "n": 3,
+        "ci": [
+          0.43849391955098227,
+          1.0
+        ],
+        "note": null
+      },
+      {
+        "name": "mode accuracy (matched)",
+        "value": 1.0,
+        "n": 1,
+        "ci": [
+          0.20654329147389294,
+          1.0
+        ],
+        "note": null
+      },
+      {
+        "name": "made-up amounts (model, before guard)",
+        "value": 0.0,
+        "n": 26,
+        "ci": [
+          0.0,
+          0.12873304380462175
+        ],
+        "note": "lower is better; guard removes these"
+      },
+      {
+        "name": "made-up amounts (after guard)",
+        "value": 0.0,
+        "n": 26,
+        "ci": [
+          0.0,
+          0.12873304380462175
+        ],
+        "note": "0 observed => upper 95% bound ≈ 11.5% (rule of three)"
+      },
+      {
+        "name": "parser latency p50",
+        "value": 1711,
+        "n": 30,
+        "ci": null
+      },
+      {
+        "name": "parser latency p95",
+        "value": 3388,
+        "n": 30,
+        "ci": null
+      }
+    ],
+    "by_lang": {
+      "bn": [
+        {
+          "name": "utterance exact match",
+          "value": 1.0,
+          "n": 2,
+          "ci": [
+            0.34237195288961925,
+            1.0
+          ],
+          "note": "every entry fully right, nothing extra"
+        },
+        {
+          "name": "amount accuracy",
+          "value": 1.0,
+          "n": 1,
+          "ci": [
+            0.20654329147389294,
+            1.0
+          ],
+          "note": null
+        },
+        {
+          "name": "kind accuracy (matched)",
+          "value": 1.0,
+          "n": 2,
+          "ci": [
+            0.34237195288961925,
+            1.0
+          ],
+          "note": null
+        }
+      ],
+      "en": [
+        {
+          "name": "utterance exact match",
+          "value": 1.0,
+          "n": 3,
+          "ci": [
+            0.43849391955098227,
+            1.0
+          ],
+          "note": "every entry fully right, nothing extra"
+        },
+        {
+          "name": "amount accuracy",
+          "value": 1.0,
+          "n": 3,
+          "ci": [
+            0.43849391955098227,
+            1.0
+          ],
+          "note": null
+        },
+        {
+          "name": "kind accuracy (matched)",
+          "value": 1.0,
+          "n": 3,
+          "ci": [
+            0.43849391955098227,
+            1.0
+          ],
+          "note": null
+        }
+      ],
+      "hi": [
+        {
+          "name": "utterance exact match",
+          "value": 0.9473684210526315,
+          "n": 19,
+          "ci": [
+            0.7536078466345479,
+            0.99064824750947
+          ],
+          "note": "every entry fully right, nothing extra"
+        },
+        {
+          "name": "amount accuracy",
+          "value": 1.0,
+          "n": 16,
+          "ci": [
+            0.8063865817272802,
+            1.0
+          ],
+          "note": null
+        },
+        {
+          "name": "kind accuracy (matched)",
+          "value": 1.0,
+          "n": 20,
+          "ci": [
+            0.8388698745050667,
+            1.0
+          ],
+          "note": null
+        }
+      ],
+      "mr": [
+        {
+          "name": "utterance exact match",
+          "value": 1.0,
+          "n": 2,
+          "ci": [
+            0.34237195288961925,
+            1.0
+          ],
+          "note": "every entry fully right, nothing extra"
+        },
+        {
+          "name": "amount accuracy",
+          "value": 1.0,
+          "n": 2,
+          "ci": [
+            0.34237195288961925,
+            1.0
+          ],
+          "note": null
+        },
+        {
+          "name": "kind accuracy (matched)",
+          "value": 1.0,
+          "n": 2,
+          "ci": [
+            0.34237195288961925,
+            1.0
+          ],
+          "note": null
+        }
+      ],
+      "ta": [
+        {
+          "name": "utterance exact match",
+          "value": 1.0,
+          "n": 2,
+          "ci": [
+            0.34237195288961925,
+            1.0
+          ],
+          "note": "every entry fully right, nothing extra"
+        },
+        {
+          "name": "amount accuracy",
+          "value": 1.0,
+          "n": 2,
+          "ci": [
+            0.34237195288961925,
+            1.0
+          ],
+          "note": null
+        },
+        {
+          "name": "kind accuracy (matched)",
+          "value": 1.0,
+          "n": 2,
+          "ci": [
+            0.34237195288961925,
+            1.0
+          ],
+          "note": null
+        }
+      ],
+      "te": [
+        {
+          "name": "utterance exact match",
+          "value": 1.0,
+          "n": 2,
+          "ci": [
+            0.34237195288961925,
+            1.0
+          ],
+          "note": "every entry fully right, nothing extra"
+        },
+        {
+          "name": "amount accuracy",
+          "value": 1.0,
+          "n": 2,
+          "ci": [
+            0.34237195288961925,
+            1.0
+          ],
+          "note": null
+        },
+        {
+          "name": "kind accuracy (matched)",
+          "value": 1.0,
+          "n": 2,
+          "ci": [
+            0.34237195288961925,
+            1.0
+          ],
+          "note": null
+        }
+      ]
+    },
+    "failures": [
+      {
+        "id": "hi-022",
+        "text": "कमला आज काम पर नहीं आई",
+        "error_type": "parser: regular_event",
+        "expected": "{\"intent\": \"log\", \"entries\": [{\"kind\": \"regular_event\", \"amount\": null, \"regular_event\": \"leave\"}]}",
+        "got": "{\"intent\": \"log\", \"entries\": [{\"kind\": \"regular_event\", \"amount\": null, \"qty\": null, \"rate\": null, \"category\": null, \"regular_event\": \"skip\", \"member\": null, \"date_offset_days\": 0, \"mode\": null}]}"
+      }
+    ]
+  }
+]

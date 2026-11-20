@@ -1,0 +1,19 @@
+# secrets
+backend/.env
+.env
+
+# build / deps
+frontend/node_modules/
+frontend/dist/
+__pycache__/
+.pytest_cache/
+*.pyc
+
+# eval data: real people's voices and SMS never go into git (consent + privacy)
+evals/audio/
+evals/.cache/
+evals/sms/
+
+# editor
+.vscode/
+.idea/

@@ -1,0 +1,12 @@
+{
+  "name": "Ghar Hisaab",
+  "short_name": "Hisaab",
+  "description": "A household account book you speak into (case-study prototype).",
+  "start_url": "/#/today",
+  "display": "standalone",
+  "background_color": "#FBF7EF",
+  "theme_color": "#FBF7EF",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
