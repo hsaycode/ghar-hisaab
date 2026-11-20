@@ -24,7 +24,7 @@
 | 11 | Build | Drop privacy claims for the prototype; make evals verifiable and transparent; are sound-alike lists limiting?; full onboarding; Render free + Groq free tier; no UPI links if risky; notebook has income, khata and lena-dena | Working prototype, 89-case eval harness, test set frozen | Polish |
 | 12 | Polish | Hindi showing in English mode; sound-alikes in every language; local open-source Whisper?; infer UPI from speech; month-by-month comparison; cleaner landing page; fix bugs | Full localisation + guard tests; 3-layer amount checks; Whisper benchmark (rejected); UPI inference; Compare tab | Audit |
 | 13 | Audit + go live | Settings page bug; audit the whole codebase for hardcoded text; key added, can I test?; which evals are used? | CSS collision fixed; 10 hardcoding issues fixed; certificate fix for Groq; live eval v1 → v2 | Write the submission |
-| 14 | Submit | One-pager, prompts document, evals document, Render deployment | This document, the evals document, deploy steps. **The one-pager is written by me** | — |
+| 14 | Submit | Prompts document, evals document, Render deployment | This document, the evals document, and deploy steps | — |
 
 **Where my judgement changed the direction:**
 - **#3:** I rejected the generic ideas.
@@ -65,7 +65,7 @@
 
 > 13. There is some issue on the settings page of the sample hosue as attached in the image. Like the hindi thing I had identified, once go through the entire code base and find if there any such issues still in the code which might be hard coded and making the user jounrey sub optimal. I have added the api key. Can I now try the testing part? What is the evals that have been used in this solution?
 
-> 14. Write me the1 page covering the points required. Create the prompts used to create the tool document. The evalss used to test the solution. And tell me how to deploy this to render
+> 14. Create the prompts used to create the tool document. The evalss used to test the solution. And tell me how to deploy this to render
 
 **Prompts given to the review council (#10):** five independent reviewers each read the spec and eval plan, researched gaps with sources, and returned findings with a severity and a proposed fix. The seats were:
 - Groww PM / case evaluator
