@@ -27,6 +27,12 @@ def values(text):
     ("सब्ज़ी साठ रुपये", [60]),
     ("दवाई चार सौ बीस", [420]),
     ("दवाई चार सो बीस", [420]),        # ASR variant observed in the local Whisper benchmark
+    ("auto mein tees diye", [30]),       # regression: test set showed "tees" mis-mapped to 23
+    ("teis rupaye", [23]),
+    ("gave fifteen rupees at the temple", [15]),   # regression: English 11-99 were missing
+    ("twenty five rupees", [25]),
+    ("forty-two for milk", [42]),
+    ("one hundred fifty", [150]),
     ("साढ़े तीन सौ", [350]),
     ("डेढ़ सौ", [150]),
     ("पेंशन अड़तीस हज़ार आई", [38000]),

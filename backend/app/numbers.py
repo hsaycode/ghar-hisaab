@@ -25,7 +25,7 @@ _HI_ROMAN = {
     9: "nau nine", 10: "das dus ten", 11: "gyarah gyaarah gyara", 12: "barah baarah bara",
     13: "terah tera", 14: "chaudah chauda", 15: "pandrah pandrah pandra", 16: "solah sola",
     17: "satrah satra", 18: "atharah athaarah athara", 19: "unnis unees unnees", 20: "bees bis",
-    21: "ikkis ikkees", 22: "bais baais baees", 23: "teis teyis tees_", 24: "chaubis chaubees",
+    21: "ikkis ikkees", 22: "bais baais baees", 23: "teis teyis teyees", 24: "chaubis chaubees",
     25: "pachis pachchis pachees pachchees", 26: "chhabbis chabbis chhabbees", 27: "sattais sattaees",
     28: "atthais athais atthaees", 29: "untis untees", 30: "tees tis", 31: "ikattis ikatees iktees",
     32: "battis battees", 33: "taintis taintees tetis", 34: "chautis chauntees chontis",
@@ -66,6 +66,10 @@ _HI_DEVA = {
     91: "इक्यानवे", 92: "बानवे", 93: "तिरानवे", 94: "चौरानवे", 95: "पचानवे", 96: "छियानवे",
     97: "सत्तानवे", 98: "अट्ठानवे", 99: "निन्यानवे",
 }
+_EN = {11: "eleven", 12: "twelve", 13: "thirteen", 14: "fourteen", 15: "fifteen", 16: "sixteen", 17: "seventeen",
+       18: "eighteen", 19: "nineteen", 20: "twenty", 30: "thirty", 40: "forty fourty", 50: "fifty", 60: "sixty",
+       70: "seventy", 80: "eighty", 90: "ninety"}
+_EN_TENS = {"twenty", "thirty", "forty", "fourty", "fifty", "sixty", "seventy", "eighty", "ninety"}
 # Partial lexicons (units, teens/tens). Compound words not listed fall back to "unverified".
 _MR = {1: "एक", 2: "दोन", 3: "तीन", 4: "चार", 5: "पाच", 6: "सहा", 7: "सात", 8: "आठ", 9: "नऊ", 10: "दहा",
        11: "अकरा", 12: "बारा", 13: "तेरा", 14: "चौदा", 15: "पंधरा", 16: "सोळा", 17: "सतरा", 18: "अठरा",
@@ -106,10 +110,12 @@ _BN_HUNDRED_SUFFIX = "শো"      # তিনশো = 300
 _BN_PREFIX = {"এক": 1, "দু": 2, "তিন": 3, "চার": 4, "পাঁচ": 5, "ছ": 6, "সাত": 7, "আট": 8, "ন": 9}
 
 _VALUES: dict[str, float] = {}
-for table in (_HI_ROMAN, _HI_DEVA, _MR, _BN, _TE, _TA):
+for table in (_HI_ROMAN, _HI_DEVA, _EN, _MR, _BN, _TE, _TA):
     for value, words in table.items():
         for w in words.split():
-            _VALUES.setdefault(w.rstrip("_"), float(value))
+            if w in _VALUES and _VALUES[w] != float(value):
+                raise ValueError(f"number word {w!r} mapped to both {_VALUES[w]} and {value}")  # caught the 'tees' bug
+            _VALUES[w] = float(value)
 # "do" is also a verb ("de do"); it still counts as a number candidate. That only widens the
 # guard's accepted set slightly; it can never create an amount on its own.
 
@@ -163,8 +169,10 @@ def find_numbers(text: str) -> list[NumberHit]:
             hits.append(NumberHit(value, group_start, group_end, text[group_start:group_end]))
         total, current, pending, modifier, group_start, last_was_multiplier = 0.0, 0.0, None, None, None, False
 
+    last_tok = ""
     for m in _TOKEN_RE.finditer(text):
         tok, s, e = m.group(0), m.start(), m.end()
+        prev_tok, last_tok = last_tok, tok   # previous token, for English "twenty five"
         # Plain digits ("420", "4,200", "1.5")
         if tok[0].isdigit():
             try:
@@ -197,6 +205,10 @@ def find_numbers(text: str) -> list[NumberHit]:
         if v is not None:
             if modifier is not None:
                 v, modifier = v + modifier, None
+            # English compounds: "twenty five" / "twenty-five" -> 25
+            if pending is not None and prev_tok in _EN_TENS and 1 <= v <= 9:
+                pending, group_end = pending + v, e
+                continue
             if group_start is not None and pending is not None:
                 close()
             if group_start is None:

@@ -21,6 +21,8 @@
 > | parser_v1 | 80.0% (24/30) | 92.3% (24/26) | 93.5% | 89.5% | 0/25 | 1.6 s / 2.5 s | Baseline |
 > | parser_v2 | **96.7% (29/30)** | **100% (26/26)** | **100%** | **100%** | 0/26 | 1.7 s / 3.4 s | Category definitions (petrol → travel, gas = cylinder only); "X ka/ki/worth" = total price; payment to a listed shop = khata payment; buying milk at a shop ≠ regular-service event; skip (delivery) vs leave (worker) |
 >
+> **Milestone test run (frozen, n=59, parser_v2):** exact match 89.8% (CI 79.5–95.3), amounts 96.2%, 0/52 made-up amounts after the guard, 1.8 s / 2.9 s. The test set exposed 2 bugs in the number reader ("tees" mapped to 23; English 11–99 missing). Both were fixed in code with regression tests, and the reported numbers are left unchanged. Full table: `docs/submission/EVALS.md`.
+>
 > The one remaining v2 dev miss (maid absence returned as `skip`) is corrected deterministically in the app by service type. Tuning stopped here to avoid overfitting 30 cases, then the frozen test set was run once.
 >
 > **Local open-source Whisper baseline (measured 2026-11-20, `evals/bench_local_whisper.py`):** faster-whisper on a laptop CPU (int8), 7 *synthetic* (clean TTS) money phrases in 6 languages, 15 spoken amounts:

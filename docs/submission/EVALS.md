@@ -18,7 +18,7 @@ Speech ─► [1 Speech-to-text] ─► text ─► [2 Understanding (LLM) + amo
 | 3. Money logic | Milk, maid and press bills (skips, extra, mid-month rate changes, leave rules, 28–31 day months, part payments, advances), cash in hand, khata and loan balances, month comparison, vendor links (tamper and size checks) | 34 automated tests (frontend) | **All pass** |
 | 2a. Number reading + amount guard | Hindi number words and fractions (dedh, dhai, saade, paune, sava), digits in every script, Marathi/Bengali/Telugu/Tamil number words, rejection of amounts nobody said | 52 automated tests (backend + harness) | **All pass** |
 | 2b. Understanding (LLM), tuning set | 30 sentences in 6 languages | Prompt v1 → v2 | **80.0% → 96.7%** fully correct |
-| 2b. Understanding (LLM), **held-out test set** | 59 sentences, locked before tuning, run once | Prompt v2 | **TEST_RESULTS_PENDING** |
+| 2b. Understanding (LLM), **held-out test set** | 59 sentences, locked before tuning, run once | Prompt v2 | **89.8%** fully correct (95% CI 79.5–95.3%); amounts 96.2%; **0 made-up amounts reached the user** |
 | 1. Speech-to-text | Real recorded voices; transcript accuracy, amounts lost in transcription, observed number confusions | Lab recordings + simulated after-dinner conversations | Harness ready; recordings in progress |
 | 1. Local open-source Whisper | Could Groq be replaced by a free local model? | 7 clean synthetic phrases, 15 amounts | **Rejected** (best: 6/15 amounts, 19 s per clip) |
 | 4. Real users | Grandparents over 7 evenings; wrong amounts planted to see if they notice; vendor flow with a milkman | Manual, reported as counts and quotes | Planned |
@@ -84,7 +84,33 @@ The one remaining tuning miss (a maid's absence returned as "skip") is corrected
 
 **Held-out test set (n = 59, prompt v2, run once):**
 
-TEST_TABLE_PENDING
+Run `20261120-214147`, frozen test-set hash verified, Groq `openai/gpt-oss-120b`, prompt `parser_v2`:
+
+| Metric | Result | 95% CI | n |
+|---|---|---|---|
+| **Utterance exact match** | **89.8%** (53/59) | 79.5–95.3% | 59 |
+| Intent accuracy | 96.6% | 88.5–99.1% | 59 |
+| Entry precision / recall | 92.4% / 95.3% | 83.5–96.7% / 87.1–98.4% | 66 / 64 |
+| **Amount accuracy** | **96.2%** | 87.0–98.9% | 52 |
+| Kind accuracy | 98.4% | 91.7–99.7% | 64 |
+| Category accuracy | 97.6% | 87.4–99.6% | 41 |
+| Regular-service event accuracy | 100% | 74.1–100% | 11 |
+| **Made-up amounts reaching the user (after guard)** | **0 / 52** | 0–6.9% | 52 |
+| Response time, typical / slow | 1.8 s / 2.9 s | n/a | 59 |
+
+By language (exact match): Hindi + Hinglish 89.5% (n=38), English 80% (n=5), Marathi 100% (n=4), Bengali 100% (n=4), Telugu 100% (n=4), Tamil 75% (n=4). Samples outside Hindi are small, so treat them as early evidence, not proof.
+
+**The 6 test failures, and what was done about each:**
+
+| Case | What happened | Cause | Action |
+|---|---|---|---|
+| "dawai chaar sau bees ki aur auto mein **tees** diye" | Auto logged as ₹23, not ₹30 | **My bug** in the number reader: "tees" was listed under 23, so the hint told the model "[=23]" | Fixed; added a check that rejects any number word mapped to two values, plus a regression test |
+| "Gave **fifteen** rupees at the temple" | The correct ₹15 was dropped and the user asked | **My bug:** English words from 11 to 99 were missing, so the guard couldn't confirm 15 (this one case is the whole 1.9% "before guard" figure) | Fixed (eleven–ninety-nine, "twenty five", "forty-two") with tests |
+| Two corrections ("nahi, … thi") | Logged as new entries instead of corrections | Model weakness on correction intent | Known limitation; the user still sees the card and can remove it. Next prompt iteration on dev only |
+| Shagun at a wedding | Logged as a family expense, not a gift | Model chose a close neighbour | Same amount and category; the gift/loan toggle on the card fixes it in one tap |
+| "Flowers, coconut 80" (Tamil) | Category "other" instead of pooja | Ambiguous item | One-tap category fix on the card |
+
+**Integrity note:** both number-reader bugs were found *by* the test set, and fixing them is a code fix, not prompt tuning. The numbers above are the original, unchanged measurement. Re-running on this test set would no longer be blind, so the next clean measurement needs a fresh set of held-out sentences.
 
 ---
 
